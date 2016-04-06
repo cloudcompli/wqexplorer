@@ -1,3 +1,41 @@
+# WQInspector Interface
+
+This application is a web interface for accessing data managed and interpreted by the [wqinspector](https://github.com/cloudcompli/wqinspector).
+
+## Setup
+
+#### Database Initialization
+
+```
+php artisan migrate
+```
+
+#### Data Import
+
+```
+php artisan import:ocpw:esm storage/app/ocpw/esm/2015.csv
+```
+
+```
+php artisan import:ocpw:nsmp storage/app/ocpw/nsmp/2015-q1.csv
+php artisan import:ocpw:nsmp storage/app/ocpw/nsmp/2015-q2.csv
+php artisan import:ocpw:nsmp storage/app/ocpw/nsmp/2015-q3.csv
+```
+
+```
+php artisan import:ocpw:mass_emissions storage/app/ocpw/mass_emissions/2015.csv
+```
+
+```
+php artisan import:smarts:construction storage/app/smarts/construction/2014-2015.html
+php artisan import:smarts:construction storage/app/smarts/construction/2015-2016.html
+```
+
+```
+php artisan import:smarts:industrial storage/app/smarts/industrial/2014-2015.html
+php artisan import:smarts:industrial storage/app/smarts/industrial/2015-2016.html
+```
+
 # Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)

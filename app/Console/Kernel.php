@@ -13,7 +13,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        Commands\Import\OCPW\EsmParameters::class,
+        Commands\Import\OCPW\MassEmissionsParameters::class,
+        Commands\Import\OCPW\NsmpParameters::class,
+        Commands\Import\SMARTS\ConstructionParameters::class,
+        Commands\Import\SMARTS\IndustrialParameters::class,
     ];
 
     /**
