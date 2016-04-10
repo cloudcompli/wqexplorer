@@ -13,6 +13,10 @@ php artisan migrate
 #### Data Import
 
 ```
+php artisan import:ciwqs:esmr --token=[GREENGOV-TOKEN] --after=2015-01-01T00:00:00 --before=2015-02-01T00:00:00
+```
+
+```
 php artisan import:ocpw:esm storage/app/ocpw/esm/2015.csv
 ```
 

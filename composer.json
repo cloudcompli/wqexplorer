@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.*"
+        "laravel/framework": "5.2.*",
+        "cloudcompli/wqinspector": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -46,5 +47,9 @@
     },
     "config": {
         "preferred-install": "dist"
-    }
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        { "type": "vcs", "url": "git@github.com:cloudcompli/wqinspector.git" }
+    ]
 }
