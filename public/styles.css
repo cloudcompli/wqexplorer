@@ -1,0 +1,6 @@
+body { font-size: 11px; }
+table { border: 1px solid #777; border-collapse: collapse; }
+table th, table td { border: 1px solid #777; margin: 0; padding: 2px 4px; }
+.text-super-danger { color: #E00; font-weight: bold; }
+.text-danger { color: #900; font-weight: bold; }
+.text-warning { color: #A73; font-weight: bold; }

@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('ocpw/{program}', 'OcpwController@listParameterTypes');
+Route::get('ocpw/{program}/{parameter}/{type}', 'OcpwController@inspectParameterType');
+Route::get('investigations/{parameter}/{date}', 'InvestigationsController@overview');
+
 Route::get('/', function () {
     return view('welcome');
 });
