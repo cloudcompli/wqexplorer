@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\OcpwStation;
 use DB;
 
 class OcpwController extends Controller
@@ -88,13 +89,15 @@ class OcpwController extends Controller
         
         foreach($this->_getParameterTypeData($parameter, $type) as $stationId => $stationData){
             
+            $station = OcpwStation::where('stationcode', $stationId)->first();
+            
             $rstat = new \RunningStat\RunningStat();
             foreach($stationData as $value)
                 $rstat->addObservation($value);
             
             $stationStats = [
-                'mean' => $rstat->getMean(),
-                'stddev' => $rstat->getStdDev(),
+                'mean' => $station->getParameterMean($this->_getProgram(), $parameter, $type),
+                'stddev' => $station->getParameterDeviation($this->_getProgram(), $parameter, $type),
                 'data' => []
             ];
             
@@ -130,7 +133,6 @@ class OcpwController extends Controller
         }
         
         foreach($statsByDate as $timestamp => $datesStats){
-            
             $rstat = new \RunningStat\RunningStat();
             foreach($datesStats as $stationId => $dateStats)
                 $rstat->addObservation($dateStats['location_dev']);

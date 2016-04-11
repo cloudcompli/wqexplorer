@@ -32,7 +32,7 @@
     <tbody>
         @foreach($statsByDate as $date => $stats)
         <tr>
-            <td><a href="{{ url('investigations/'.$parameter.'/'.$date) }}">{{ $date }}</a></td>
+            <td><a href="{{ url('investigations/'.$parameter.'/'.$type.'/'.$date) }}">{{ $date }}</a></td>
             @foreach($stations as $station)
             <td>
                 @if(isset($stats[$station]))

@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\Import\OCPW\EsmParameters::class,
         Commands\Import\OCPW\MassEmissionsParameters::class,
         Commands\Import\OCPW\NsmpParameters::class,
+        Commands\Import\OCPW\Stations::class,
         Commands\Import\SMARTS\ConstructionParameters::class,
         Commands\Import\SMARTS\IndustrialParameters::class,
     ];
