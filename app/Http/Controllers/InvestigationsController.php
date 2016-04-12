@@ -30,11 +30,53 @@ class InvestigationsController extends Controller
         
         return view('investigations/overview', [
             'ocpwProgramsData' => $ocpwProgramsData,
-            'smartsParameters' => $smartsParameters,
-            'industrialFacilities' => $industrialFacilities,
+            'industrialFacilitiesData' => $this->_makeIndustrialFacilitiesData($industrialFacilities, $smartsParameters, $date),
             'parameter' => $parameter,
             'investigationDate' => $date
         ]);
+    }
+    
+    protected function _makeIndustrialFacilitiesData($industrialFacilities, $smartsParameters, $investigationDate)
+    {
+        $industrialFacilitiesData = array_fill_keys($smartsParameters, []);
+        
+        foreach($smartsParameters as $smartsParameter){
+            foreach($industrialFacilities as $industrialFacility){
+                
+                $parameterResults = [];
+                $rstat = new RunningStat();
+                
+                foreach($industrialFacility->getParameterModels($smartsParameter) as $parameterModel){
+                    if($parameterModel instanceof DateTime)
+                        $dateString = $parameterModel->date_time_of_sample_collection->format('Y-m-d');
+                    else
+                        $dateString = Carbon::parse($parameterModel->date_time_of_sample_collection)->format('Y-m-d');
+                    if(!isset($parameterResults[$dateString]))
+                        $parameterResults[$dateString] = [];
+                    $parameterResults[$dateString][] = $parameterModel->result;
+                    $rstat->addObservation($parameterModel->result);
+                }
+                
+                foreach($parameterResults as $dateString => $results){
+                    if(Carbon::parse($dateString)->between(Carbon::parse($investigationDate)->subDays(60), Carbon::parse($investigationDate)->addDays(15)))
+                        $parameterResults[$dateString] = array_sum($results) / count($results);
+                    else
+                        unset($parameterResults[$dateString]);
+                }
+                
+                if($rstat->getCount() > 0){
+                    $industrialFacilitiesData[$smartsParameter][] = (object)[
+                        'facility' => $industrialFacility,
+                        'results' => $parameterResults,
+                        'mean' => $rstat->getMean(),
+                        'stddev' => $rstat->getStdDev(),
+                        'count' => $rstat->getCount()
+                    ];
+                }
+            }
+        }
+        
+        return $industrialFacilitiesData;
     }
     
     protected function _averageStationProgramParameterData($records)

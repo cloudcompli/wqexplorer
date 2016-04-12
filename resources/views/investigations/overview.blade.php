@@ -31,7 +31,7 @@ use Carbon\Carbon;
             <td>{{ $record->station }} - {{ $record->stationModel->stationdescription }}</td>
             <td>{{ $record->result }}</td>
             <td>{{ round($mean, 3) }}</td>
-            <td>{{ round(($record->result - $mean) / $stddev, 3) }}</td>
+            <td>{{ $stddev != 0 ? round(($record->result - $mean) / $stddev, 3) : 0 }}</td>
         </tr>
         @endforeach
         </tbody>
@@ -40,76 +40,79 @@ use Carbon\Carbon;
 
 <h2>Industrial Facilities</h2>
 
-@foreach($smartsParameters as $parameter)
+@foreach(array_keys($industrialFacilitiesData) as $parameter)
 
-    <h3>{{ $parameter }} </h3>
+    @if(count($industrialFacilitiesData[$parameter]) > 0)
 
-    <table>
-        <thead>
-            <tr>
-                <th rowspan="2">Facility Name</th>
-                <th colspan="2">Expected</th>
-                <th colspan="3">Most Recent</th>
-            </tr>
-            <tr>
-                <th>Mean</th>
-                <th>Std Dev</th>
-                <th>Date</th>
-                <th>Result</th>
-                <th>Deviations from Mean</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($industrialFacilities as $industrialFacility)
-            
-                <?php 
-                
-                $first = true; 
-                $parameterModels = $industrialFacility->getParameterModels($parameter);
-                
-                $parameterResults = [];
-                $rstat = new RunningStat\RunningStat();
-                
-                foreach($parameterModels as $parameterModel){
-                    if($parameterModel instanceof DateTime)
-                        $dateString = $parameterModel->date_time_of_sample_collection->format('Y-m-d');
-                    else
-                        $dateString = Carbon::parse($parameterModel->date_time_of_sample_collection)->format('Y-m-d');
-                    if(!isset($parameterResults[$dateString]))
-                        $parameterResults[$dateString] = [];
-                    $parameterResults[$dateString][] = $parameterModel->result;
-                    $rstat->addObservation($parameterModel->result);
-                }
-                
-                foreach($parameterResults as $dateString => $results){
-                    if(Carbon::parse($dateString)->between(Carbon::parse($investigationDate)->subDays(30), Carbon::parse($investigationDate)))
-                        $parameterResults[$dateString] = array_sum($results) / count($results);
-                    else
-                        unset($parameterResults[$dateString]);
-                }
-                
-                $numEntries = count($parameterResults);
-                $mean = $rstat->getMean();
-                $stddev = $rstat->getStdDev();
-                
-                ?>
-                
-                @foreach($parameterResults as $date => $parameterResult)
-                    <tr>
-                        @if($first)
-                        <td rowspan="{{ $numEntries }}">{{ $industrialFacility->site_facility_name }}</td>
-                        <td rowspan="{{ $numEntries }}">{{ round($mean, 3) }}</td>
-                        <td rowspan="{{ $numEntries }}">{{ round($stddev, 3) }}</td>
-                        @endif
-                        <td>{{ $date }}</td>
-                        <td>{{ round($parameterResult, 3) }}</td>
-                        <td>{{ $stddev != 0 ? round(($parameterResult - $mean) / $stddev, 3) : 0 }}</td>
-                    </tr>
-                    <?php $first = false; ?>
+        <h3>{{ $parameter }}</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Facility Name</th>
+                    <th colspan="3">Expected</th>
+                    <th colspan="3">Most Recent</th>
+                </tr>
+                <tr>
+                    <th>Records</th>
+                    <th>Mean</th>
+                    <th>Std Dev</th>
+                    <th>Date</th>
+                    <th>Result</th>
+                    <th>Deviations from Mean</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($industrialFacilitiesData[$parameter] as $data)
+
+                    <?php 
+                    $first = true; 
+                    $numRows = count($data->results);
+                    ?>
+
+                    @foreach($data->results as $date => $result)
+                        <?php
+                        $deviations = $data->stddev != 0 ? round(($result - $data->mean) / $data->stddev, 3) : 0;
+                        ?>
+                        <tr>
+                            @if($first)
+                            <td rowspan="{{ $numRows }}">
+                                {{ $data->facility->site_facility_name }}
+                                <br>
+                                <small>
+                                {{ $data->facility->site_facility_address }},
+                                {{ $data->facility->site_facility_city }}
+                                {{ $data->facility->site_facility_state }}
+                                {{ $data->facility->site_facility_zip }}
+                                </small>
+                            </td>
+                            <td rowspan="{{ $numRows }}">{{ $data->count }}</td>
+                            <td rowspan="{{ $numRows }}">{{ round($data->mean, 3) }}</td>
+                            <td rowspan="{{ $numRows }}">{{ round($data->stddev, 3) }}</td>
+                            @endif
+                            <td>{{ $date }}</td>
+                            <td>{{ round($result, 3) }}</td>
+                            <td>
+                                <span 
+                                @if($deviations > 1.5)
+                                class="text-super-danger"
+                                @elseif($deviations > 1)
+                                class="text-danger"
+                                @elseif($deviations > 0.4)
+                                class="text-warning"
+                                @endif
+                                >
+                                {{ $deviations }}
+                                </span>
+                            </td>
+                        </tr>
+                        <?php $first = false; ?>
+                    @endforeach
                 @endforeach
-            @endforeach
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        
+    @endif
 
 @endforeach
 
