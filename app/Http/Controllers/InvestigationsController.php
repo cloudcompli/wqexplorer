@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Ocpw;
+use App\Parameters;
+use App\SmartsIndustrialFacility;
 use Carbon\Carbon;
 use DB;
 use RunningStat\RunningStat;
@@ -19,10 +21,19 @@ class InvestigationsController extends Controller
         foreach(array_keys(Ocpw::$programs) as $program)
             $ocpwProgramsData[$program] = $this->_averageStationProgramParameterData(Ocpw::getProgramParameterData($program, $parameter, $type, $date->copy()->subDays(5), $date->copy()->addDays(15)));
         
+        if(isset(Parameters::$mapOcpwToSmarts[$parameter]))
+            $smartsParameters = Parameters::$mapOcpwToSmarts[$parameter];
+        else
+            $smartsParameters = [];
+        
+        $industrialFacilities = SmartsIndustrialFacility::allWithParameter($smartsParameters);
+        
         return view('investigations/overview', [
             'ocpwProgramsData' => $ocpwProgramsData,
+            'smartsParameters' => $smartsParameters,
+            'industrialFacilities' => $industrialFacilities,
             'parameter' => $parameter,
-            'date' => $date
+            'investigationDate' => $date
         ]);
     }
     

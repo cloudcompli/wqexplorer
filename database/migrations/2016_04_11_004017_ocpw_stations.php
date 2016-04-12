@@ -18,8 +18,8 @@ class OcpwStations extends Migration
             $table->string('stationcode');
             $table->string('stationdescription');
             $table->string('stationid');
-            $table->decimal('latitude')->nullable();
-            $table->decimal('longitude')->nullable();
+            $table->double('latitude', 15, 10)->nullable();
+            $table->double('longitude', 15, 10)->nullable();
             $table->string('abbreviation');
             $table->timestamps();
             

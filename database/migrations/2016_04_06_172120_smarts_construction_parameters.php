@@ -33,8 +33,8 @@ class SmartsConstructionParameters extends Migration
             $table->string('site_facility_state');
             $table->string('site_facility_zip');
             $table->string('site_facility_county');
-            $table->decimal('latitude')->nullable();
-            $table->decimal('longitude')->nullable();
+            $table->double('latitude', 15, 10)->nullable();
+            $table->double('longitude', 15, 10)->nullable();
             $table->timestamp('date_time_of_sample_collection');
             $table->string('risk');
             $table->string('program_type');

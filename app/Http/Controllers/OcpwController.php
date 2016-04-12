@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\OcpwStation;
+use App\Parameters;
 use DB;
 
 class OcpwController extends Controller
@@ -23,7 +24,9 @@ class OcpwController extends Controller
         });
         
         return view('parameters/list_parameter_types', [
-            'parameters' => $parameters,
+            'parameters' => array_filter($parameters, function($r){
+                return in_array($r['parameter'], Parameters::$ocpw[$this->_getProgram()]);
+            }),
             'program' => $this->_getProgram()
         ]);
     }
