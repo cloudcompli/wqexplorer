@@ -8,12 +8,15 @@ use Illuminate\Support\Collection;
 class SmartsIndustrialFacility
 {
     protected $_fields = [
+        'wdid',
         'site_facility_name', 
         'site_facility_address',
         'site_facility_city',
         'site_facility_state',
         'site_facility_zip',
-        'site_facility_county'
+        'site_facility_county',
+        'longitude',
+        'latitude'
     ];
     
     protected $_wdid;
@@ -50,6 +53,11 @@ class SmartsIndustrialFacility
         }
         
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
+    }
+    
+    public function __set($key, $value)
+    {
+        $this->_data[$key] = $value;
     }
     
     public function __isset($key)
@@ -105,6 +113,31 @@ class SmartsIndustrialFacility
         $this->_parameters[$parameter->parameter]->push($parameter);
     }
     
+    public static function geocodeFacilities($facilities)
+    {
+        $geocodedFacilities = [];
+        
+        $industrialLocations = [];
+        foreach(SmartsIndustrialLocation::all() as $location){
+            $key = $location->wdid.' '.$location->site_facility_address.', '.$location->site_facility_city.' '.$location->site_facility_state.' '.$location->site_facility_zip;
+            $industrialLocations[$key] = $location;
+        }
+        
+        foreach($facilities as $facility){
+            $key = $facility->wdid.' '.$facility->site_facility_address.', '.$facility->site_facility_city.' '.$facility->site_facility_state.' '.$facility->site_facility_zip;
+            if(isset($industrialLocations[$key])){
+                $facility->latitude = $industrialLocations[$key]->latitude;
+                $facility->longitude = $industrialLocations[$key]->longitude;
+            }else{
+                $facility->latitude = null;
+                $facility->longitude = null;
+            }
+            $geocodedFacilities[] = $facility;
+        }
+        
+        return new Collection($geocodedFacilities);
+    }
+    
     public static function allWithParameter($parameter)
     {
         if(!is_array($parameter))
@@ -125,6 +158,6 @@ class SmartsIndustrialFacility
                 $facilities[$smartsIndustrialParemetersModel->wdid]->loadParameterModel($smartsIndustrialParemetersModel);
             });
         
-        return new Collection($facilities);
+        return static::geocodeFacilities($facilities);
     }
 }

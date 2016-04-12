@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\Geocode\SMARTS\Industrial::class,
         Commands\Import\CIWQS\EsmrParameters::class,
         Commands\Import\OCPW\EsmParameters::class,
         Commands\Import\OCPW\MassEmissionsParameters::class,

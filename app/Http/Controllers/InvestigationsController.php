@@ -68,6 +68,7 @@ class InvestigationsController extends Controller
                     $industrialFacilitiesData[$smartsParameter][] = (object)[
                         'facility' => $industrialFacility,
                         'results' => $parameterResults,
+                        'units' => $parameterModel->units,
                         'mean' => $rstat->getMean(),
                         'stddev' => $rstat->getStdDev(),
                         'count' => $rstat->getCount()
@@ -101,6 +102,7 @@ class InvestigationsController extends Controller
             foreach($record->models as $model)
                 $rstat->addObservation($model->result);
             $data[$key]->result = $rstat->getMean();
+            $data[$key]->units = $model->units;
         }
         
         return new \Illuminate\Support\Collection(array_values($data));

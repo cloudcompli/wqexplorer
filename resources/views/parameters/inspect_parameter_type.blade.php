@@ -30,7 +30,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($statsByDate as $date => $stats)
+        @foreach(array_reverse($statsByDate) as $date => $stats)
         <tr>
             <td><a href="{{ url('investigations/'.$parameter.'/'.$type.'/'.$date) }}">{{ $date }}</a></td>
             @foreach($stations as $station)
