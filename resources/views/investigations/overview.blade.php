@@ -193,6 +193,47 @@ use Carbon\Carbon;
 
 @endforeach
 
+<h3>Recent Violations</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Facility</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($violations as $violation)
+        <?php
+        $mapPoints[] = [
+            'popup' => '<h4>'.$violation->facility_name
+                        .'<br><small>'
+                            .$violation->place_address
+                            .', '.$violation->place_city
+                            .' California'
+                            .' '.$violation->place_zip.'</small>'
+                    .'</h4>'
+                    .'<ul>'
+                    .'<li><strong>Date:</strong> '.Carbon::parse($violation->effective_date)->format('Y-m-d').'</li>'
+                    .'<li><strong>Priority:</strong> '.$violation->priority.'</li>'
+                    .'<li><strong>Status:</strong> '.$violation->violation_status.'</li>'
+                    .'<li><strong>Description:</strong> '.$violation->violation_description.'</li>'
+                    .'</ul>',
+            'longitude' => $violation->longitude, 
+            'latitude' => $violation->latitude,
+            'icon' => 'VIOLATION'
+        ];
+        ?>
+        <tr>
+            <td>{{ Carbon::parse($violation->effective_date)->format('Y-m-d') }}</td>
+            <td>{{ $violation->facility_name }}
+                <br><small>{{ $violation->place_address }}, {{ $violation->place_city }} California {{ $violation->place_zip }}</small></td>
+            <td>{{ $violation->violation_description }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 <script type='text/javascript'>
 (function(){
     
@@ -212,6 +253,7 @@ use Carbon\Carbon;
             MONITORING_WARNING: new LeafIcon({iconUrl: "{{ asset('packages/mapicons/monitoring_warning.png') }}"}),
             MONITORING_DANGER: new LeafIcon({iconUrl: "{{ asset('packages/mapicons/monitoring_danger.png') }}"}),
             MONITORING_SUPER_DANGER: new LeafIcon({iconUrl: "{{ asset('packages/mapicons/monitoring_super_danger.png') }}"}),
+            VIOLATION: new LeafIcon({iconUrl: "{{ asset('packages/mapicons/violation.png') }}"}),
         },
         map = L.map('mapid').setView([33.7, -117.9], 11);
     map.scrollWheelZoom.disable();

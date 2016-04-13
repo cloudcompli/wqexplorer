@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         Commands\Import\OCPW\Stations::class,
         Commands\Import\SMARTS\ConstructionParameters::class,
         Commands\Import\SMARTS\IndustrialParameters::class,
+        Commands\Import\SMARTS\Violations::class,
     ];
 
     /**

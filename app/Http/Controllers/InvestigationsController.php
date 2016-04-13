@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Ocpw;
 use App\Parameters;
 use App\SmartsIndustrialFacility;
+use App\SmartsViolation;
 use Carbon\Carbon;
 use DB;
 use RunningStat\RunningStat;
@@ -28,9 +29,12 @@ class InvestigationsController extends Controller
         
         $industrialFacilities = SmartsIndustrialFacility::allWithParameter($smartsParameters);
         
+        $violations = SmartsViolation::where('effective_date', '>', $date->copy()->subDays(45))->where('effective_date', '<', $date->copy()->addDays(15))->orderBy('effective_date', 'desc')->get();
+        
         return view('investigations/overview', [
             'ocpwProgramsData' => $ocpwProgramsData,
             'industrialFacilitiesData' => $this->_makeIndustrialFacilitiesData($industrialFacilities, $smartsParameters, $date),
+            'violations' => $violations,
             'parameter' => $parameter,
             'investigationDate' => $date
         ]);
