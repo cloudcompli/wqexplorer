@@ -34,6 +34,8 @@ use Carbon\Carbon;
         <tbody>
         @foreach($ocpwProgramData as $record)
         <?php
+        if(!$record->stationModel)
+            continue;
         $mean = $record->stationModel->getParameterMean($program, $parameter, $record->type);
         $stddev = $record->stationModel->getParameterDeviation($program, $parameter, $record->type);
         $deviations = $stddev != 0 ? round(($record->result - $mean) / $stddev, 3) : 0;

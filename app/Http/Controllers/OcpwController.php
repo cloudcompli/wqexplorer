@@ -94,6 +94,9 @@ class OcpwController extends Controller
             
             $station = OcpwStation::where('stationcode', $stationId)->first();
             
+            if(!$station)
+                continue;
+            
             $rstat = new \RunningStat\RunningStat();
             foreach($stationData as $value)
                 $rstat->addObservation($value);

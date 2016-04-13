@@ -2,8 +2,8 @@
 
 @section('head')
 <style>
-    table td:nth-child(4n+2), table td:nth-child(4n+3), table td:nth-child(4n+4){ border-right: 1px solid #ccc; }
-    table td:nth-child(4n+3), td:nth-child(4n+4), table td:nth-child(4n+5){ color: #777; }
+    table td:nth-child(3n+2), table td:nth-child(3n+3){ border-right: 1px solid #ccc; }
+    table td:nth-child(3n+3), td:nth-child(3n+4){ color: #777; }
     table td:nth-child(n+1){ text-align: center; }
 </style>
 @stop
@@ -17,7 +17,7 @@
         <tr>
             <th rowspan='2'>Timestamp</th>
             @foreach($stations as $station)
-            <th colspan='4'>{{ $station }}</th>
+            <th colspan='3'>{{ $station }}</th>
             @endforeach
         </tr>
         <tr>
@@ -25,7 +25,6 @@
             <th>val</th>
             <th>loc mean</th>
             <th>loc dev</th>
-            <th>time dev of loc devs</th>
             @endforeach
         </tr>
     </thead>
@@ -46,21 +45,19 @@
             </td>
             <td>
                 @if(isset($stats[$station]))
+                <?php 
+                if($stats[$station]['location_dev'] > 1.5){ 
+                    $class = 'text-super-danger';
+                }elseif($stats[$station]['location_dev'] > 1){
+                    $class = 'text-danger';
+                }elseif($stats[$station]['location_dev'] > 0.2){
+                    $class = 'text-warning';
+                }else{
+                    $class = '';
+                }
+                ?>
+                <span class="{{ $class }}">
                 {{ round($stats[$station]['location_dev'], 2) }}
-                @endif
-            </td>
-            <td>
-                <span 
-                @if(isset($stats[$station]))
-                @if($stats[$station]['dev_of_location_devs'] > 1.5)
-                class="text-super-danger"
-                @elseif($stats[$station]['dev_of_location_devs'] > 1)
-                class="text-danger"
-                @elseif($stats[$station]['dev_of_location_devs'] > 0.4)
-                class="text-warning"
-                @endif
-                >
-                {{ round($stats[$station]['dev_of_location_devs'], 2) }}
                 </span>
                 @endif
             </td>

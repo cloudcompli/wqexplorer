@@ -49,7 +49,17 @@ class Parameters
             'Fe'
         ],
         'nsmp' => [
-            
+            'Se',
+            'Pb',
+            'Ni',
+            'Zn',
+            'As',
+            'Cd',
+            'Ag',
+            'Cr',
+            'Cu',
+            'AmmoniaN',
+            'TKN'
         ]
     ];
     
