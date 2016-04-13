@@ -16,5 +16,5 @@ Route::get('ocpw/{program}/{parameter}/{type}', 'OcpwController@inspectParameter
 Route::get('investigations/{parameter}/{type}/{date}', 'InvestigationsController@overview');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout');
 });

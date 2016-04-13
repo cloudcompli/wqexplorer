@@ -22,7 +22,7 @@
             @yield('content')
         </main>
         <footer>
-            Copyright &copy; 2016 CloudCompli, Inc.
+            <p><strong>Copyright &copy; 2016 <a href="http://cloudcompli.com" target="_blank">CloudCompli, Inc.</a></strong><br><em><a href="https://github.com/cloudcompli/wqexplorer" target="_blank">Open Source</a> under the MIT License</em></p>
         </footer>
     </body>
 </html>
