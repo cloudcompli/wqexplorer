@@ -11,10 +11,15 @@
 |
 */
 
-Route::get('ocpw/{program}', 'OcpwController@listParameterTypes');
-Route::get('ocpw/{program}/{parameter}/{type}', 'OcpwController@inspectParameterType');
-Route::get('investigations/{parameter}/{type}/{date}', 'InvestigationsController@overview');
+Route::get('ctr', 'CtrController@index');
+Route::get('ctr/{programCode}/{parameterCode}/{waterType}/{fraction}', 'CtrController@results');
+Route::get('ctr/{programCode}/{parameterCode}/{waterType}/{fraction}/{date}', 'CtrController@investigate');
+
+Route::get('variances/ocpw', 'Variances\OcpwController@index');
+Route::get('variances/ocpw/{program}', 'Variances\OcpwController@listParameterTypes');
+Route::get('variances/ocpw/{program}/{parameter}/{type}', 'Variances\OcpwController@inspectParameterType');
+Route::get('variances/investigations/{parameter}/{type}/{date}', 'Variances\InvestigationsController@overview');
 
 Route::get('/', function () {
-    return view('layout');
+    return view('home');
 });

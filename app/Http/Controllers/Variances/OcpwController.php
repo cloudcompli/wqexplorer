@@ -1,13 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Variances;
 
+use App\Http\Controllers\Controller;
 use App\OcpwStation;
 use App\Parameters;
 use DB;
 
 class OcpwController extends Controller
 {
+    public function index()
+    {
+        return view('variances/ocpw/programs');
+    }
+    
     public function listParameterTypes()
     {
         $parameters = $this->_getQueryBuilder()
@@ -23,7 +29,7 @@ class OcpwController extends Controller
             return $a['count'] < $b['count'] ? 1 : -1;
         });
         
-        return view('parameters/list_parameter_types', [
+        return view('variances/ocpw/list_parameter_types', [
             'parameters' => array_filter($parameters, function($r){
                 return in_array($r['parameter'], Parameters::$ocpw[$this->_getProgram()]);
             }),
@@ -40,7 +46,7 @@ class OcpwController extends Controller
         
         $statsByDate = $this->_translateParameterTypeStatsToTimestamp($stats);
         
-        return view('parameters/inspect_parameter_type', [
+        return view('variances/ocpw/inspect_parameter_type', [
             'stats' => $stats,
             'statsByDate' => $statsByDate,
             'stations' => array_keys($stats),

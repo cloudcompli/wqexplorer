@@ -19,7 +19,7 @@
             <td>{{ $parameter['parameter'] }}</td>
             <td>{{ $parameter['type'] }}</td>
             <td>{{ $parameter['count'] }}</td>
-            <td><a href="{{ url('ocpw/'.$program.'/'.$parameter['parameter'].'/'.$parameter['type']) }}">View</a></td>
+            <td><a href="{{ url('variances/ocpw/'.$program.'/'.$parameter['parameter'].'/'.$parameter['type']) }}">View</a></td>
         </tr>
     @endforeach
     </tbody>

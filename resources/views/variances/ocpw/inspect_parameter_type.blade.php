@@ -31,7 +31,7 @@
     <tbody>
         @foreach(array_reverse($statsByDate) as $date => $stats)
         <tr>
-            <td><a href="{{ url('investigations/'.$parameter.'/'.$type.'/'.$date) }}">{{ $date }}</a></td>
+            <td><a href="{{ url('variances/investigations/'.$parameter.'/'.$type.'/'.$date) }}">{{ $date }}</a></td>
             @foreach($stations as $station)
             <td>
                 @if(isset($stats[$station]))
@@ -67,6 +67,6 @@
     </tbody>
 </table>
 
-<p><a href='{{ url('parameters/'.$program) }}'>Back to Parameter List</a></p>
+<p><a href='{{ url('variances/ocpw/parameters/'.$program) }}'>Back to Parameter List</a></p>
 
 @stop

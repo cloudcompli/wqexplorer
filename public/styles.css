@@ -20,3 +20,5 @@ table th, table td { border: 1px solid #777; margin: 0; padding: 2px 4px; }
 .text-warning { color: #A73; font-weight: bold; }
 
 body > footer { text-align: center; color: #777; }
+
+body > main a { text-decoration: none; }

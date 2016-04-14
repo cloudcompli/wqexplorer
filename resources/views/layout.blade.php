@@ -11,10 +11,8 @@
             <h1>WQExplorer</h1>
             <nav>
                 <ul>
-                    <li><strong>Programs:</strong></li>
-                    @foreach(App\Ocpw::$programs as $key => $name)
-                    <li><a href="{{ url('ocpw/'.$key) }}">{{ $name }}</a></li>
-                    @endforeach
+                    <li><a href="{{ url('ctr') }}">CTR Limits</a></li>
+                    <li><a href="{{ url('variances/ocpw') }}">Variances</a></li>
                 </ul>
             </nav>
         </header>
