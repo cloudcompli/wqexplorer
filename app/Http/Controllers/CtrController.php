@@ -44,8 +44,8 @@ class CtrController extends Controller
         $parameter = $this->getRouteParameter('parameterCode');
         $date = Carbon::parse($this->getRouteParameter('date'));
         $results = $this->_getParameterResultsFromRouteParametersQuery()
-                ->where($this->_getParameterResultsTableName().'.date', '>', $date->copy()->subDays(20))
-                ->where($this->_getParameterResultsTableName().'.date', '<', $date->copy()->addDays(10))
+                ->where($this->_getParameterResultsTableName().'.date', '>', $date->copy()->subDays(15))
+                ->where($this->_getParameterResultsTableName().'.date', '<', $date->copy()->addDays(30))
                 ->get()
                 ->toArray();
         
