@@ -8,6 +8,9 @@ use App\OcpwStation;
 @section('head')
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+<script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
 <style>
     .ctr_params td:first-child { white-space: nowrap; }
     .ctr_params td:nth-child(5n+3), td:nth-child(5n+5)  { border-right-color: #eee; }
@@ -367,14 +370,25 @@ foreach($results as $result){
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
     }).addTo(map);
     
+    var markers = L.markerClusterGroup({
+        maxClusterRadius: 1,
+        zoomToBoundsOnClick: false
+    });
+    
     @foreach($mapPoints as $mapPoint)
-        var marker = L.marker([
+        markers.addLayer(L.marker([
             "{{ $mapPoint['latitude'] }}",
             "{{ $mapPoint['longitude'] }}"
         ], {
             icon: icons["{!! $mapPoint['icon'] !!}"]
-        }).bindPopup("{!! $mapPoint['popup'] !!}").addTo(map);
+        }).bindPopup("{!! $mapPoint['popup'] !!}"));
     @endforeach
+    
+    markers.addTo(map);
+    
+    markers.on('clusterclick', function (a) {
+        a.layer.spiderfy();
+    });
 })();
 </script>
 
