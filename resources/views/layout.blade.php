@@ -12,7 +12,7 @@
             <nav>
                 <ul>
                     <li><a href="{{ url('ctr') }}">CTR Limits</a></li>
-                    <li><a href="{{ url('variances/ocpw') }}">Variances</a></li>
+                    <li><a href="{{ url('variances/ocpw') }}">Deviation</a></li>
                 </ul>
             </nav>
         </header>
