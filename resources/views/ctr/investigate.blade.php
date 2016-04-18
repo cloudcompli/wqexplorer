@@ -376,12 +376,14 @@ foreach($results as $result){
     });
     
     @foreach($mapPoints as $mapPoint)
+        @if(is_numeric($mapPoint['latitude']) && is_numeric($mapPoint['longitude']))
         markers.addLayer(L.marker([
             "{{ $mapPoint['latitude'] }}",
             "{{ $mapPoint['longitude'] }}"
         ], {
             icon: icons["{!! $mapPoint['icon'] !!}"]
         }).bindPopup("{!! $mapPoint['popup'] !!}"));
+        @endif
     @endforeach
     
     markers.addTo(map);

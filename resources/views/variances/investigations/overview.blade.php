@@ -217,7 +217,7 @@ use Carbon\Carbon;
                     .'<li><strong>Date:</strong> '.Carbon::parse($violation->effective_date)->format('Y-m-d').'</li>'
                     .'<li><strong>Priority:</strong> '.$violation->priority.'</li>'
                     .'<li><strong>Status:</strong> '.$violation->violation_status.'</li>'
-                    .'<li><strong>Description:</strong> '.$violation->violation_description.'</li>'
+                    .'<li><strong>Description:</strong> '.str_replace('"', '\"', $violation->violation_description).'</li>'
                     .'</ul>',
             'longitude' => $violation->longitude, 
             'latitude' => $violation->latitude,
@@ -262,12 +262,14 @@ use Carbon\Carbon;
     }).addTo(map);
     
     @foreach($mapPoints as $mapPoint)
+        @if(is_numeric($mapPoint['latitude']) && is_numeric($mapPoint['longitude']))
         var marker = L.marker([
             "{{ $mapPoint['latitude'] }}",
             "{{ $mapPoint['longitude'] }}"
         ], {
             icon: icons["{!! $mapPoint['icon'] !!}"]
         }).bindPopup("{!! $mapPoint['popup'] !!}").addTo(map);
+        @endif
     @endforeach
 })();
 </script>
