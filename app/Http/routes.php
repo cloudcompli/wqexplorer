@@ -20,6 +20,10 @@ Route::get('variances/ocpw/{program}', 'Variances\OcpwController@listParameterTy
 Route::get('variances/ocpw/{program}/{parameter}/{type}', 'Variances\OcpwController@inspectParameterType');
 Route::get('variances/investigations/{parameter}/{type}/{date}', 'Variances\InvestigationsController@overview');
 
+Route::get('/paper', function () {
+    return redirect('https://docs.google.com/document/d/1iegjiHFQO7AEqvP6mapbEKgLEmszWQ-Mg9Z2dET9ZMo/edit?usp=sharing');
+});
+
 Route::get('/', function () {
     return view('home');
 });
